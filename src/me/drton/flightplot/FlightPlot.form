@@ -212,38 +212,32 @@
           <component id="149b9" class="javax.swing.JButton" binding="openLogButton" default-binding="true">
             <constraints/>
             <properties>
-              <maximumSize width="65" height="24"/>
               <minimumSize width="65" height="24"/>
-              <preferredSize width="65" height="24"/>
+              <preferredSize width="100" height="24"/>
               <text value="Open Log"/>
             </properties>
           </component>
           <component id="85547" class="javax.swing.JButton" binding="fieldsListButton" default-binding="true">
             <constraints/>
             <properties>
-              <margin top="0" left="2" bottom="0" right="2"/>
-              <maximumSize width="65" height="24"/>
               <minimumSize width="65" height="24"/>
-              <preferredSize width="65" height="24"/>
+              <preferredSize width="100" height="24"/>
               <text value="Fields List"/>
             </properties>
           </component>
           <component id="98cb0" class="javax.swing.JButton" binding="logInfoButton">
             <constraints/>
             <properties>
-              <maximumSize width="65" height="24"/>
               <minimumSize width="65" height="24"/>
-              <preferredSize width="65" height="24"/>
+              <preferredSize width="100" height="24"/>
               <text value="Log Info"/>
             </properties>
           </component>
           <component id="b62f4" class="javax.swing.JCheckBox" binding="markerCheckBox">
             <constraints/>
             <properties>
-              <margin top="0" left="0" bottom="0" right="0"/>
-              <maximumSize width="82" height="28"/>
               <minimumSize width="82" height="28"/>
-              <preferredSize width="82" height="28"/>
+              <preferredSize width="90" height="28"/>
               <text value="Markers"/>
             </properties>
           </component>
@@ -251,9 +245,8 @@
             <constraints/>
             <properties>
               <labelFor value="d45fb"/>
-              <maximumSize width="46" height="28"/>
               <minimumSize width="46" height="28"/>
-              <preferredSize width="46" height="28"/>
+              <preferredSize width="70" height="28"/>
               <text value=" Preset:"/>
             </properties>
           </component>
@@ -268,17 +261,15 @@
           <component id="26fff" class="javax.swing.JButton" binding="savePresetButton" default-binding="true">
             <constraints/>
             <properties>
-              <maximumSize width="73" height="24"/>
               <minimumSize width="73" height="24"/>
-              <text value="Save preset"/>
+              <text value="Save Preset"/>
             </properties>
           </component>
           <component id="2506a" class="javax.swing.JButton" binding="deletePresetButton" default-binding="true">
             <constraints/>
             <properties>
-              <maximumSize width="81" height="24"/>
               <minimumSize width="81" height="24"/>
-              <preferredSize width="81" height="24"/>
+              <preferredSize width="110" height="24"/>
               <text value="Delete Preset"/>
             </properties>
           </component>
