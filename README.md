@@ -7,56 +7,33 @@ FlightPlot
 
 Universal flight log plotter
 
-Installation
-------------
-Requirements:
- -  Java 6 or newer (JDK, http://www.oracle.com/technetwork/java/javase/downloads/index.html)
- -  ant (In ubuntu, you should install ant like (sudo apt-get install ant)
+Docs and releases can be found on [pixhawk.org/dev/flightplot](http://pixhawk.org/dev/flightplot).
 
+Development
+-----------
 
-Clone repository:
-```
-https://github.com/DrTon/FlightPlot.git
-```
+IntelliJ IDEA IDE was used to develop FlightPlot, project files already exist in repo.
 
-Compile:
-```
-cd FlightPlot
-ant
-```
-
-Run:
-```
-java -jar out/production/flightplot.jar
-```
-
-Developing
-----------
-
-For Developer:
- - If you want to modify flightplot, use IntelliJ IDEA tool
-
-http://pixhawk.org/dev/flightplot
-
-#### Supported formats:
+### Supported formats:
  - PX4 log (.px4log, .bin)
  - APM log (.bin)
  - ULog (.ulg)
- 
-#### Features:
+
+### Features:
  - Data processing: low pass filtering, scaling, shifting, derivative, integral, etc.
  - Track export in KML and GPS format
  - Saving plot as image
 
 Binaries for Linux, Mac OS, Windows can be found on [project homepage](https://pixhawk.org/dev/flightplot#download).
 
-Building from sources
-----------------------
+Building from source
+--------------------
+
 Requirements:
  -  Java 6 or newer (JDK, http://www.oracle.com/technetwork/java/javase/downloads/index.html)
  -  ant
 
-Clone repository (`--recursive` flag is required to pull in [jMAVlib](https://github.com/DrTon/jMAVlib)):
+Clone the repository. The `--recursive` flag is required to pull in the [jMAVlib](https://github.com/PX4/jMAVlib) submodule).
 ```
 git clone --recursive https://github.com/PX4/FlightPlot.git
 ```
@@ -64,10 +41,10 @@ git clone --recursive https://github.com/PX4/FlightPlot.git
 Build:
 ```
 cd FlightPlot
-ant 
+ant
 ```
 
-if you want to create deb file for ubuntu, use gen_deb.
+If you want to create deb file for ubuntu, use gen_deb.
 ```
 cd FlightPlot
 ant gen_deb
@@ -79,7 +56,3 @@ Run:
 java -jar out/production/flightplot.jar
 ```
 
-Developing
-----------
-
-IntelliJ IDEA IDE was used to develop FlightPlot, project files already exist in repo.
