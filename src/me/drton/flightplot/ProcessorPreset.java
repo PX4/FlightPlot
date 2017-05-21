@@ -14,12 +14,14 @@ public class ProcessorPreset {
     private String processorType;
     private Map<String, Object> parameters;
     private Map<String, Color> colors;
+    private boolean visible;
 
-    public ProcessorPreset(String title, String processorType, Map<String, Object> parameters, Map<String, Color> colors) {
+    public ProcessorPreset(String title, String processorType, Map<String, Object> parameters, Map<String, Color> colors, boolean visible) {
         this.title = title;
         this.processorType = processorType;
         this.parameters = parameters;
         this.colors = colors;
+        this.visible = visible;
     }
 
     public static ProcessorPreset unpackJSONObject(JSONObject json) throws IOException {
@@ -35,7 +37,7 @@ public class ProcessorPreset {
             String keyStr = (String) key;
             colorsNew.put(keyStr, new Color(Integer.parseInt(jsonColors.get(keyStr).toString(), 16)));
         }
-        return new ProcessorPreset(json.getString("Title"), json.getString("ProcessorType"), parametersNew, colorsNew);
+        return new ProcessorPreset(json.getString("Title"), json.getString("ProcessorType"), parametersNew, colorsNew, json.optBoolean("visible", true));
     }
 
     public String getTitle() {
@@ -44,6 +46,14 @@ public class ProcessorPreset {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public String getProcessorType() {
@@ -80,6 +90,7 @@ public class ProcessorPreset {
             jsonColors.put(entry.getKey(), Integer.toHexString(entry.getValue().getRGB()).substring(2, 8));
         }
         json.put("Colors", new JSONObject(jsonColors));
+        json.put("visible", visible);
         return json;
     }
 
@@ -103,7 +114,7 @@ public class ProcessorPreset {
     }
 
     public ProcessorPreset clone() {
-        return new ProcessorPreset(title, processorType, new HashMap<String, Object>(parameters), new HashMap<String, Color>(colors));
+        return new ProcessorPreset(title, processorType, new HashMap<String, Object>(parameters), new HashMap<String, Color>(colors), visible);
     }
 
     @Override

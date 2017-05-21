@@ -183,10 +183,10 @@ public class FlightPlot {
                 PlotProcessor processor = new Simple();
                 processor.setParameters(Collections.<String, Object>singletonMap("Fields", fieldsValue.toString()));
                 ProcessorPreset pp = new ProcessorPreset(processorTitle, processor.getProcessorType(),
-                        processor.getParameters(), Collections.<String, Color>emptyMap());
+                        processor.getParameters(), Collections.<String, Color>emptyMap(), true);
                 updatePresetParameters(pp, null);
                 int i = processorsListModel.getRowCount();
-                processorsListModel.addRow(new Object[]{true, pp});
+                processorsListModel.addRow(new Object[]{pp.isVisible(), pp});
                 processorsList.getSelectionModel().setSelectionInterval(i, i);
                 processorsList.repaint();
                 updateUsedColors();
@@ -257,6 +257,22 @@ public class FlightPlot {
             public void tableChanged(TableModelEvent e) {
                 if (e.getType() == TableModelEvent.UPDATE) {
                     if (e.getColumn() == 0) {
+                        // Update processor preset field here to remember visibility state
+                        ProcessorPreset pp = (ProcessorPreset) processorsListModel.getValueAt(e.getFirstRow(), 1);
+                        if ((Boolean) processorsListModel.getValueAt(e.getFirstRow(), 0)) {
+                            pp.setVisible(true);
+                        } else {
+                            pp.setVisible(false);
+                        }
+
+                        // Update and save current preset if selected
+                        if (currentPreset != null) {
+                            Preset preset = formatPreset(currentPreset);
+                            updatePreset(preset);
+                            loadPresetsList();
+                            savePreferences();
+                        }
+
                         processFile();
                     }
                 }
@@ -368,9 +384,10 @@ public class FlightPlot {
             // Save preset
             onSavePreset();
         } else if ("comboBoxChanged".equals(e.getActionCommand())) {
-            // Load preset
             String oldPreset = currentPreset;
             Object selection = presetComboBox.getSelectedItem();
+
+            // Load selected preset
             if (selection == null) {
                 processorsListModel.setRowCount(0);
                 updateUsedColors();
@@ -393,9 +410,16 @@ public class FlightPlot {
             return;
         }
         Preset preset = formatPreset(presetTitle);
+        updatePreset(preset);
+        loadPresetsList();
+        updatePresetEdited(false);
+        savePreferences();
+    }
+
+    private void updatePreset(Preset preset) {
         boolean addNew = true;
         for (int i = 0; i < presetsList.size(); i++) {
-            if (presetTitle.equals(presetsList.get(i).getTitle())) {
+            if (preset.getTitle().equals(presetsList.get(i).getTitle())) {
                 // Update existing preset
                 addNew = false;
                 presetsList.set(i, preset);
@@ -409,9 +433,6 @@ public class FlightPlot {
             currentPreset = preset.getTitle();
             setStatus("Preset \"" + preset.getTitle() + "\" added");
         }
-        loadPresetsList();
-        updatePresetEdited(false);
-        savePreferences();
     }
 
     private void onDeletePreset() {
@@ -473,12 +494,17 @@ public class FlightPlot {
             }
         };
         Collections.sort(presetsList, presetComparator);
+
+        // need to keep this because the change logic of the list will clean it
+        String currentPresetCached = currentPreset;
+
         presetComboBox.removeAllItems();
         presetComboBox.addItem(null);
         Preset selectPreset = null;
         for (Preset preset : presetsList) {
             presetComboBox.addItem(preset);
-            if (preset.getTitle().equals(currentPreset)) {
+            if (preset.getTitle().equals(currentPresetCached)) {
+                currentPreset = currentPresetCached;
                 selectPreset = preset;
             }
         }
@@ -528,7 +554,7 @@ public class FlightPlot {
         processorsListModel.setRowCount(0);
         for (ProcessorPreset pp : preset.getProcessorPresets()) {
             updatePresetParameters(pp, null);
-            processorsListModel.addRow(new Object[]{true, pp.clone()});
+            processorsListModel.addRow(new Object[]{pp.isVisible(), pp.clone()});
         }
         updateUsedColors();
     }
@@ -1077,8 +1103,9 @@ public class FlightPlot {
     private List<ProcessorPreset> getActiveProcessors() {
         List<ProcessorPreset> processors = new ArrayList<ProcessorPreset>();
         for (int row = 0; row < processorsListModel.getRowCount(); row++) {
+            ProcessorPreset pp = (ProcessorPreset) processorsListModel.getValueAt(row, 1);
             if ((Boolean) processorsListModel.getValueAt(row, 0)) {
-                processors.add((ProcessorPreset) processorsListModel.getValueAt(row, 1));
+                processors.add(pp);
             }
         }
         return processors;
@@ -1250,7 +1277,7 @@ public class FlightPlot {
             if (!processorPreset.getProcessorType().equals(processorType)) {
                 // Processor type changed
                 Map<String, Object> parameters = processorPreset.getParameters();
-                processorPresetNew = new ProcessorPreset(title, processorType, new HashMap<String, Object>(), Collections.<String, Color>emptyMap());
+                processorPresetNew = new ProcessorPreset(title, processorType, new HashMap<String, Object>(), Collections.<String, Color>emptyMap(), true);
                 updatePresetParameters(processorPresetNew, parameters);
                 for (int row = 0; row < processorsListModel.getRowCount(); row++) {
                     if (processorsListModel.getValueAt(row, 1) == processorPreset) {
@@ -1265,7 +1292,7 @@ public class FlightPlot {
                 processorPresetNew.setTitle(title);
             }
         } else {
-            processorPreset = new ProcessorPreset(title, processorType, Collections.<String, Object>emptyMap(), Collections.<String, Color>emptyMap());
+            processorPreset = new ProcessorPreset(title, processorType, Collections.<String, Object>emptyMap(), Collections.<String, Color>emptyMap(), true);
             updatePresetParameters(processorPreset, null);
             int i = processorsListModel.getRowCount();
             processorsListModel.addRow(new Object[]{true, processorPreset});
