@@ -93,7 +93,7 @@ public class FlightPlot {
     private JButton removeProcessorButton;
     private JButton openLogButton;
     private JButton fieldsListButton;
-    private JComboBox<Preset> presetComboBox;
+    private JComboBox presetComboBox;
     private List<Preset> presetsList = new ArrayList<Preset>();
     private JButton deletePresetButton;
     private JButton logInfoButton;
