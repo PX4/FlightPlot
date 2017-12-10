@@ -1,0 +1,27 @@
+language: java
+
+jdk:
+  - oraclejdk8
+  #- oraclejdk9 #TODO: fix java9
+  - openjdk7
+  - openjdk8
+  #- openjdk9 #TODO: fix java9
+
+git:
+  depth: 2000
+  submodules: true
+
+cache:
+  ccache: true
+
+script:
+  - ant clean
+  - ant zip_artifacts
+
+deploy:
+  provider: releases
+  file: out/production/*.zip 
+  skip_cleanup: true
+  on:
+    tags: true
+
