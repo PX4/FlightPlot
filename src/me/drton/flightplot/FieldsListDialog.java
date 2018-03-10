@@ -11,21 +11,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.DocumentEvent;
 
 public class FieldsListDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonAdd;
     private JTable fieldsTable;
     private JButton buttonClose;
+    private JTextField textSearch;
     private DefaultTableModel fieldsTableModel;
+    private TableRowSorter sorter;
 
     public FieldsListDialog(final Runnable callbackAdd) {
         setContentPane(contentPane);
@@ -64,10 +72,28 @@ public class FieldsListDialog extends JDialog {
                 }
             }
         });
+        textSearch.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                filterFields(textSearch.getText());
+            }
+            public void removeUpdate(DocumentEvent e) {
+                filterFields(textSearch.getText());
+            }
+            public void insertUpdate(DocumentEvent e) {
+                filterFields(textSearch.getText());
+            }
+        });
     }
 
     private void onClose() {
         setVisible(false);
+    }
+
+    @Override
+    public void setVisible(boolean value) {
+        super.setVisible(value);
+        // Focus search input on showing
+        textSearch.requestFocus();
     }
 
     public void setFieldsList(Map<String, String> fields) {
@@ -81,10 +107,15 @@ public class FieldsListDialog extends JDialog {
         }
     }
 
+    private void filterFields(String str) {
+        RowFilter<DefaultTableModel, Object> rf = RowFilter.regexFilter("(?i)"  + Pattern.quote(str), 0);
+        sorter.setRowFilter(rf);
+    }
+
     public List<String> getSelectedFields() {
         List<String> selectedFields = new ArrayList<String>();
         for (int i : fieldsTable.getSelectedRows()) {
-            selectedFields.add((String) fieldsTableModel.getValueAt(i, 0));
+            selectedFields.add((String) fieldsTable.getValueAt(i, 0));
         }
         return selectedFields;
     }
@@ -100,5 +131,7 @@ public class FieldsListDialog extends JDialog {
         fieldsTableModel.addColumn("Field");
         fieldsTableModel.addColumn("Type");
         fieldsTable = new JTable(fieldsTableModel);
+        sorter = new TableRowSorter<DefaultTableModel>(fieldsTableModel);
+        fieldsTable.setRowSorter(sorter);
     }
 }
