@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=FlightPlot
 Type=Application
-Exec='/usr/local/bin/flightplot.jar'  Z:%f
+Exec=java -jar /usr/local/bin/flightplot.jar
 Terminal=false
 Icon=/usr/share/icons/64x64/apps/flightplot.png
 Comment=FlightPlot
