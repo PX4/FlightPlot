@@ -17,7 +17,7 @@ public class EulerFromQuaternion extends PlotProcessor {
     @Override
     public Map<String, Object> getDefaultParameters() {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("Fields", "ATT.Q0 ATT.Q1 ATT.Q2 ATT.Q3");
+        params.put("Fields", "vehicle_attitude_0.q[0] vehicle_attitude_0.q[1] vehicle_attitude_0.q[2] vehicle_attitude_0.q[3]");
         params.put("Show", "RPY");
         params.put("Scale", 1.0);
         return params;

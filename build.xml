@@ -48,7 +48,7 @@
 
     <target name="flightplot_mac_os_app" description="Build FlightPlot Mac OS X app" depends="flightplot">
         <jarbundler dir="out/production" name="FlightPlot" mainclass="me.drton.flightplot.FlightPlot"
-                    jar="out/production/flightplot.jar" version="0.3.1"
+                    jar="out/production/flightplot.jar" version="0.3.2"
                     vmoptions="-Dapple.eawt.quitStrategy=CLOSE_ALL_WINDOWS -Djava.ext.dirs="
                     stubfile="lib/universalJavaApplicationStub"
                     jvmversion="1.6+"

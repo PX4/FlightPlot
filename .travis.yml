@@ -1,0 +1,37 @@
+language: java
+
+jdk:
+  - oraclejdk8
+  #- oraclejdk9 #TODO: fix java9
+  - openjdk7
+  - openjdk8
+  #- openjdk9 #TODO: fix java9
+
+git:
+  depth: 2000
+  submodules: true
+
+cache:
+  ccache: true
+
+before_install:
+  - git fetch --all --prune --tags
+
+script:
+  - ant clean
+  - ant zip_artifacts
+
+deploy:
+  # github releases
+  provider: releases
+  file:
+    - "out/production/flightplot.jar.zip"
+    - "out/production/flightplot.app.zip"
+  skip_cleanup: true
+  api_key:
+    secure: M/HAcLXh+DaEszygJ0CahVxL+AS7KUE0UlRzDZ+v10sWN9TtNXtMtPi75Jc+XKtOgJitRIYRxl3MFruZKBZPhiBmiqWNwYyHbdc4EtIOsAElDUfi9X833gr6ioNaNUm3a+ZKkXvQyYIgAY/WyCwqkXsO4iwueou6uOBI8ZMNoSg3fuDvd5aj6GfDsoi0HasdznE4mlXcYWLWv1sPtb7cbo8nYVTRGSSCntVrjH7n0sEMhOzFOQkEZTGtpA/34UTy5sWiFjsBN/4MYptqdnKtGUtJbmuJqgAoco+DmkpqxU2hlj2HM5KuEmbkggxQ7J2hU0IrBR1fTu7sQ6+AbjnEh195wgyC00AbpN4j8fF+r7+R9FxtSXJ5Bfm77dcs+T/hcz35hPn1wjKAKuoKzYTT4oQYRsCUx29tctcnivmUP4H1CSXMRQXnM1QqJ+xd2yXJ92UMeTQGmjdlzDaGnoph98y89QJ+p9k/Qn3nKHxuc7UWsNbvZGNWn/1iQ8i6psj7NkdhDgV4bjMkLodYmCLtCf3Htg7AHOewMLYtO1XHDgrac/qv6jhsYD97+7fAC7cDHCX3IT3n/pQHS+AGnt13z+HySv7mbaHT+aE+I0MdZ/ujBv2Q9M5Z85UMnOzoEQs3UB2+MgBwTadRi9xQGo+ZIbBRuDv7JzKbffYaYOC8Hhs=
+  on:
+    all_branches: true
+    repo: PX4/FlightPlot
+    tags: true
+
