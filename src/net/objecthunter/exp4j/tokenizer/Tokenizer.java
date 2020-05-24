@@ -148,6 +148,8 @@ public class Tokenizer {
         while (!isEndOfExpression(offset + len - 1) &&
                 (isAlphabetic(expression[offset + len - 1]) ||
                         Character.isDigit(expression[offset + len - 1]) ||
+                        expression[offset + len - 1] == '[' ||
+                        expression[offset + len - 1] == ']' ||
                         expression[offset + len - 1] == '_' ||
                         expression[offset + len - 1] == '.')) {
             String name = new String(expression, offset, len);
